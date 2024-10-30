@@ -1,1 +1,1 @@
-web: node server.js
+ web: node ballet-backend/server.js
