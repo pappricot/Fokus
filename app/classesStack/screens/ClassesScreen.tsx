@@ -1,15 +1,18 @@
-import { ClassesStackParamList } from "@/app/App";
-import { styles } from "@/app/globalStyle";
-import { ThemedText } from "@/components/ThemedText";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import { ClassesStackParamList } from '@/App';
+import { styles } from '@/app/globalStyle';
+import { ThemedText } from '@/components/ThemedText';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React from 'react';
+import { View, TouchableOpacity } from 'react-native';
 
-type ClassesScreenNavigationProp = StackNavigationProp<ClassesStackParamList, 'ClassesScreen'>;
+type ClassesScreenNavigationProp = StackNavigationProp<
+  ClassesStackParamList,
+  'ClassesScreen'
+>;
 
 export default function ClassesScreen() {
-  const navigation = useNavigation<ClassesScreenNavigationProp>(); 
+  const navigation = useNavigation<ClassesScreenNavigationProp>();
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -25,7 +28,6 @@ export default function ClassesScreen() {
       >
         <ThemedText style={styles.buttonText}>WEEKEND CLASSES</ThemedText>
       </TouchableOpacity>
-
     </View>
   );
 }

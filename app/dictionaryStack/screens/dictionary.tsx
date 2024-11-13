@@ -13,30 +13,29 @@ const categories = [
 
 // Define the type for navigation if not already defined
 type NavigationParams = {
-    DictionaryCategory: { category: string };
+  DictionaryCategory: { category: string };
 };
 
-
-
 export default function Dictionary() {
-    const navigation: NavigationProp<NavigationParams> = useNavigation();
+  const navigation: NavigationProp<NavigationParams> = useNavigation();
   return (
     <View style={styles.container}>
-    <FlatList
-      data={categories}
-     
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          style={styles.item}
-          onPress={() => navigation.navigate('DictionaryCategory', { category: item })}
-        >
-          <ThemedText style={styles.itemText}>{item}</ThemedText>
-        </TouchableOpacity>
-      )}
-      keyExtractor={(item: string) => item}
-    />
-  </View>
-);
+      <FlatList
+        data={categories}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() =>
+              navigation.navigate('DictionaryCategory', { category: item })
+            }
+          >
+            <ThemedText style={styles.itemText}>{item}</ThemedText>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item: string) => item}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

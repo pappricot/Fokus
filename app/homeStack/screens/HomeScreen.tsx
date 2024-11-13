@@ -1,59 +1,92 @@
-// import React from 'react';
-// import { View, Button, TouchableOpacity, Text } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
-// import { styles } from '../../globalStyle';
-// import { StackNavigationProp } from '@react-navigation/stack';
-// import { HomeStackParamList } from '@/app/App';
-
-// type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>; 
-// export default function HomeScreen() {
-//   const navigation = useNavigation<HomeScreenNavigationProp>();
-
-//   return (
-//     <View style={styles.container}>
-//       <TouchableOpacity
-//         style={styles.button}
-//         onPress={() => navigation.navigate('AnimationTest1')}
-//       >
-//         <Text style={styles.buttonText}>
-//         COIN
-//         </Text>
-//       </TouchableOpacity>
-//       <View style={{ height: 20 }} />
-//       <TouchableOpacity
-//         style={styles.button}
-//         onPress={() => navigation.navigate('AnimationTest2')}
-//       >
-//         <Text style={styles.buttonText}>
-//         FLOWER
-//         </Text>
-//       </TouchableOpacity>
-//       {/* Add more buttons as needed */}
-//     </View>
-//   );
-// }
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { styles as globalStyles } from '../../globalStyle';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { HomeStackParamList } from '@/App';
+import { getWeather } from '@/app/util/weather';
+import ActivityIndicator from '@/components/ActivityIndicator';
+
+type HomeScreenNavigationProp = StackNavigationProp<
+  HomeStackParamList,
+  'OutfitScreen'
+>;
 
 const HomeScreen = () => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const [temperature, setTemperature] = useState<number | null>(null);
+  const [isCelsius, setIsCelsius] = useState(true);
+  const [loading, setLoading] = useState(true);
+
+  // Function to convert Celsius to Fahrenheit
+  const convertToFahrenheit = (celsius: number) => (celsius * 9) / 5 + 32;
+
+  // Toggle function to switch between Celsius and Fahrenheit
+  const toggleTemperatureUnit = () => {
+    setIsCelsius(!isCelsius);
+  };
+
+  // Display the temperature based on the selected unit
+  const displayedTemperature = isCelsius
+    ? temperature
+    : temperature !== null
+      ? convertToFahrenheit(temperature)
+      : null;
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      setLoading(true);
+      const result = await getWeather();
+      if (result && result.current) {
+        setTemperature(result.current.temperature);
+      } else {
+        console.log('Weather data could not be retrieved.');
+      }
+      setLoading(false);
+    };
+
+    fetchWeather();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={globalStyles.container}>
+        <ActivityIndicator loading={loading} />
+      </View>
+    );
+  }
+
   return (
     <View style={globalStyles.container}>
-      <Text style={styles.greeting}>Good morning, @morphofokus. It's 19°C and sunny in your area. Today at a glance and siggested outfit:</Text>
-      <TouchableOpacity style={globalStyles.button}>
+      <TouchableOpacity onPress={toggleTemperatureUnit}>
+        <Text style={styles.greeting}>
+          Good morning, @morphofokus. It's{' '}
+          <Text style={{ textDecorationLine: 'underline' }}>
+            {displayedTemperature !== null
+              ? displayedTemperature.toFixed(1)
+              : '...'}
+            °{isCelsius ? 'C' : 'F'}
+          </Text>
+          . Today at a glance and siggested outfit:
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('OutfitScreen');
+        }}
+        style={globalStyles.button}
+      >
         <Text style={globalStyles.buttonText}>EXPLORE OUTFITS</Text>
       </TouchableOpacity>
-  
-      
+
       <View style={styles.imageContainer}>
-        <Image 
-          source={require('../../../assets/images/mockProfile.png')} 
-          style={styles.profileImage} 
+        <Image
+          source={require('../../../assets/images/mockProfile.png')}
+          style={styles.profileImage}
           resizeMode="center"
         />
       </View>
-      
+
       <View style={styles.listContainer}>
         <View style={styles.doContainer}>
           <Text style={styles.listTitle}>Do</Text>
@@ -61,7 +94,7 @@ const HomeScreen = () => {
           <Text>Back scratch</Text>
           <Text>Midnight oil</Text>
         </View>
-        
+
         <View style={styles.dontContainer}>
           <Text style={styles.listTitle}>Don't</Text>
           <Text>Lukewarm coffee</Text>
@@ -69,7 +102,9 @@ const HomeScreen = () => {
           <Text>Spreadsheets</Text>
         </View>
       </View>
-      <Text style={styles.advice}>Flirt to find possibility of connection, not to boost your ego.</Text>
+      <Text style={styles.advice}>
+        Flirt to find possibility of connection, not to boost your ego.
+      </Text>
     </View>
   );
 };
@@ -79,13 +114,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     textAlign: 'center',
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   advice: {
     fontSize: 24,
     marginBottom: 20,
     textAlign: 'center',
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   listContainer: {
     flexDirection: 'row',
@@ -105,14 +140,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   imageContainer: {
-    width: 100, 
-    height: 100, 
-    overflow: 'hidden', 
-    borderRadius: 50, 
+    width: 100,
+    height: 100,
+    overflow: 'hidden',
+    borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
   profileImage: {
     width: '100%', // Makes the image fill the container
@@ -121,5 +156,3 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
-
-

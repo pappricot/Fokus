@@ -1,5 +1,13 @@
 import React, { useState, useRef } from 'react';
-import { View, Animated, StyleSheet, Text, Image, TouchableOpacity, Easing } from 'react-native';
+import {
+  View,
+  Animated,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+  Easing,
+} from 'react-native';
 import { styles } from '../../globalStyle';
 
 export default function AnimationTest1() {
@@ -16,27 +24,27 @@ export default function AnimationTest1() {
             toValue: 1,
             duration: 5000,
             useNativeDriver: true,
-            easing: Easing.linear
+            easing: Easing.linear,
           }),
           Animated.timing(spinAnim1, {
             toValue: 0,
             duration: 0,
             useNativeDriver: true,
-          })
+          }),
         ]),
         Animated.sequence([
           Animated.timing(spinAnim2, {
             toValue: 1,
             duration: 5000,
             useNativeDriver: true,
-            easing: Easing.linear
+            easing: Easing.linear,
           }),
           Animated.timing(spinAnim2, {
             toValue: 0,
             duration: 0,
             useNativeDriver: true,
-          })
-        ])
+          }),
+        ]),
       ])
     ).start();
   };
@@ -52,11 +60,11 @@ export default function AnimationTest1() {
   const spin = Animated.add(
     spinAnim1.interpolate({
       inputRange: [0, 1],
-      outputRange: ['0deg', '360deg']
+      outputRange: ['0deg', '360deg'],
     }),
     spinAnim2.interpolate({
       inputRange: [0, 1],
-      outputRange: ['0deg', '360deg']
+      outputRange: ['0deg', '360deg'],
     })
   );
 
@@ -75,10 +83,9 @@ export default function AnimationTest1() {
         onPress={isAnimating ? stopAnimation : startAnimation}
       >
         <Text style={styles.buttonText}>
-          {isAnimating ? "STOP ANIMATION" : "START ANIMATION"}
+          {isAnimating ? 'STOP ANIMATION' : 'START ANIMATION'}
         </Text>
       </TouchableOpacity>
     </View>
   );
 }
-

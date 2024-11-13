@@ -1,5 +1,13 @@
 import React, { useState, useRef } from 'react';
-import { View, Animated, StyleSheet, Text, Image, TouchableOpacity, Easing } from 'react-native';
+import {
+  View,
+  Animated,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+  Easing,
+} from 'react-native';
 import { styles } from '../../globalStyle';
 
 export default function AnimationTest2() {
@@ -16,27 +24,27 @@ export default function AnimationTest2() {
             toValue: 1,
             duration: 5000,
             useNativeDriver: true,
-            easing: Easing.linear
+            easing: Easing.linear,
           }),
           Animated.timing(spinAnim1, {
             toValue: 0,
             duration: 0,
             useNativeDriver: true,
-          })
+          }),
         ]),
         Animated.sequence([
           Animated.timing(spinAnim2, {
             toValue: 1,
             duration: 5000,
             useNativeDriver: true,
-            easing: Easing.linear
+            easing: Easing.linear,
           }),
           Animated.timing(spinAnim2, {
             toValue: 0,
             duration: 0,
             useNativeDriver: true,
-          })
-        ])
+          }),
+        ]),
       ])
     ).start();
   };
@@ -52,18 +60,18 @@ export default function AnimationTest2() {
   const spin = Animated.add(
     spinAnim1.interpolate({
       inputRange: [0, 1],
-      outputRange: ['0deg', '360deg']
+      outputRange: ['0deg', '360deg'],
     }),
     spinAnim2.interpolate({
       inputRange: [0, 1],
-      outputRange: ['0deg', '360deg']
+      outputRange: ['0deg', '360deg'],
     })
   );
 
   return (
     <View style={styles.container}>
       <Animated.View style={{ ...styles.box, transform: [{ rotateZ: spin }] }}>
-      <View style={{ height: 20 }} />
+        <View style={{ height: 20 }} />
         <Image
           source={require('../../../assets/images/ball-with-radius.png')}
           style={styles.image}
@@ -75,10 +83,9 @@ export default function AnimationTest2() {
         onPress={isAnimating ? stopAnimation : startAnimation}
       >
         <Text style={styles.buttonText}>
-          {isAnimating ? "STOP ANIMATION" : "START ANIMATION"}
+          {isAnimating ? 'STOP ANIMATION' : 'START ANIMATION'}
         </Text>
       </TouchableOpacity>
     </View>
   );
 }
-
